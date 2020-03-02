@@ -1,0 +1,8 @@
+id_executor;Логин исполнителя;Пароль исполнителя;ФИО исполнителя;Грейд исполнителя;id_manager
+1;galiulina;galiulina;Галиуллина Альбина  Нафисовна;junior;1
+2;kudryashov;kudryashov;Кудряшов Александр  Витальевич;middle;1
+3;velizhanina;velizhanina;Велижанина Светлана  Николаевна;senior;2
+4;plotnikova;plotnikova;Плотникова Алевтина  Валентиновна;junior;2
+5;malcev;malcev;Мальцев Александр  Сергеевич;middle;2
+6;morozova;morozova;Морозова Екатерина  Владимировна;junior;3
+7;pyankova;pyankova;Пьянкова Анастасия  Борисовна;junior;3
