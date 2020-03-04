@@ -13,7 +13,6 @@ namespace esoft
 {
     public partial class Form1 : Form
     {
-        UpravCoef upravCoef = new UpravCoef();
         SqlConnection sqlConnection = new SqlConnection("Data source=303-1\\NEW_MSSQLSERVER; Initial Catalog=EsoftDBZP; Integrated Security=true;");
         public Form1()
         {
@@ -22,27 +21,47 @@ namespace esoft
 
         private void enterButton_Click(object sender, EventArgs e)
         {
+            UpravCoef upravCoef = new UpravCoef();
             sqlConnection.Open();
             //создание sql запроса
-            SqlCommand sqlCommand = new SqlCommand(
+            SqlCommand sqlCommandExecutor = new SqlCommand(
                 $"SELECT" +
-                    $" executor.Логин," +
-                    $" managers.Логин " +
+                    $" executor.id_executor " +
                 $"FROM" +
-                    $" executor, managers " +
+                    $" executor " +
                 $"WHERE" +
-                    $" (executor.Логин = '{login.Text}' AND executor.Пароль = '{password.Text}') OR " +
-                    $" (managers.Логин = '{login.Text}' AND managers.Пароль = '{password.Text}')",
+                    $" executor.Логин = '{login.Text}' AND executor.Пароль = '{password.Text}'",
                 sqlConnection);
-            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
-            if (sqlDataReader.HasRows)
+            SqlCommand sqlCommandManager = new SqlCommand(
+                $"SELECT" +
+                    $" managers.id_manager " +
+                $"FROM" +
+                    $" managers " +
+                $"WHERE" +
+                    $" managers.Логин = '{login.Text}' AND managers.Пароль = '{password.Text}'",
+                sqlConnection);
+
+            SqlDataReader sqlDataReaderManager = sqlCommandManager.ExecuteReader();
+
+            if (sqlDataReaderManager.HasRows)
             {
+                sqlDataReaderManager.Read();
+                upravCoef.managerID = sqlDataReaderManager[0].ToString();
                 upravCoef.Show();//открытие формы
             }
             else
             {
-                MessageBox.Show("Некорректные логин или пароль");
+                sqlDataReaderManager.Close();
+                SqlDataReader sqlDataReaderExecutor = sqlCommandExecutor.ExecuteReader();
+                if (sqlDataReaderExecutor.HasRows)
+                {
+
+                }
+                else
+                {
+                    MessageBox.Show("Некорректные логин или пароль");
+                }
             }
             sqlConnection.Close();
         }
