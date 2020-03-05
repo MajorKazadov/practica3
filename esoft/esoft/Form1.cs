@@ -22,11 +22,13 @@ namespace esoft
         private void enterButton_Click(object sender, EventArgs e)
         {
             UpravCoef upravCoef = new UpravCoef();
+            Zadachi zadachi = new Zadachi();
             sqlConnection.Open();
             //создание sql запроса
             SqlCommand sqlCommandExecutor = new SqlCommand(
                 $"SELECT" +
-                    $" executor.id_executor " +
+                    $" executor.id_executor, " +
+                    $" executor.Логин " +
                 $"FROM" +
                     $" executor " +
                 $"WHERE" +
@@ -35,7 +37,8 @@ namespace esoft
 
             SqlCommand sqlCommandManager = new SqlCommand(
                 $"SELECT" +
-                    $" managers.id_manager " +
+                    $" managers.id_manager, " +
+                    $" managers.Логин " +
                 $"FROM" +
                     $" managers " +
                 $"WHERE" +
@@ -49,6 +52,11 @@ namespace esoft
                 sqlDataReaderManager.Read();
                 upravCoef.managerID = sqlDataReaderManager[0].ToString();
                 upravCoef.Show();//открытие формы
+
+                zadachi.userID       = sqlDataReaderManager[0].ToString();
+                zadachi.user         = sqlDataReaderManager[1].ToString();
+                zadachi.managerCheck = true;
+                zadachi.Show();
             }
             else
             {
@@ -56,7 +64,10 @@ namespace esoft
                 SqlDataReader sqlDataReaderExecutor = sqlCommandExecutor.ExecuteReader();
                 if (sqlDataReaderExecutor.HasRows)
                 {
-
+                    sqlDataReaderExecutor.Read();
+                    zadachi.userID = sqlDataReaderExecutor[0].ToString();
+                    zadachi.user   = sqlDataReaderExecutor[1].ToString();
+                    zadachi.Show();
                 }
                 else
                 {
@@ -64,6 +75,10 @@ namespace esoft
                 }
             }
             sqlConnection.Close();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
         }
     }
 }
